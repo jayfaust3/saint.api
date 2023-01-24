@@ -1,0 +1,141 @@
+package com.saintapi.api.controllers.saint
+
+import com.saintapi.common.models.data.saint.SaintDatabaseModel
+import com.saintapi.dataaccess.repositories.saint.SaintRepository
+import com.saintapi.common.models.api.response.ResponseModel
+import com.saintapi.common.models.api.request.saint.PostSaintRequestModel
+import com.saintapi.common.models.dtos.saint.SaintDTO
+import org.bson.types.ObjectId
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
+import java.time.LocalDateTime
+
+@RestController
+@RequestMapping("/api/saints")
+class SaintController(
+        private val repository: SaintRepository
+) {
+
+    @GetMapping
+    fun getAll(): ResponseEntity<ResponseModel<List<SaintDTO>>> {
+        val records = repository.findAll().map{ it -> 
+            SaintDTO(
+                id = it.id.toString(),
+                createdDate = it.createdDate,
+                modifiedDate = it.modifiedDate,
+                active = it.active,
+                name = it.name,
+                yearOfBirth = it.yearOfBirth,
+                yearOfDeath = it.yearOfDeath,
+                region = it.region,
+                martyred = it.martyred,
+                notes = it.notes,
+                hasAvatar = it.hasAvatar
+            )
+        }
+
+        return ResponseEntity.ok(
+            ResponseModel<List<SaintDTO>>(
+                records
+            )
+        )
+    }
+
+    @GetMapping("/{id}")
+    fun get(@PathVariable("id") id: String): ResponseEntity<ResponseModel<SaintDTO>> {
+        val record = repository.findOneById(ObjectId(id))
+
+        return ResponseEntity.ok(
+            ResponseModel<SaintDTO>(
+                SaintDTO(
+                    id = record.id.toString(),
+                    createdDate = record.createdDate,
+                    modifiedDate = record.modifiedDate,
+                    active = record.active,
+                    name = record.name,
+                    yearOfBirth = record.yearOfBirth,
+                    yearOfDeath = record.yearOfDeath,
+                    region = record.region,
+                    martyred = record.martyred,
+                    notes = record.notes,
+                    hasAvatar = record.hasAvatar
+                )
+            )
+        )
+    }
+
+    @PostMapping
+    fun create(@RequestBody request: PostSaintRequestModel): ResponseEntity<ResponseModel<SaintDTO>> {
+        val record = repository.save(
+            SaintDatabaseModel(
+                createdDate = LocalDateTime.now(),
+                modifiedDate = LocalDateTime.now(),
+                active = request.active,
+                name = request.name,
+                yearOfBirth = request.yearOfBirth,
+                yearOfDeath = request.yearOfDeath,
+                region = request.region,
+                martyred = request.martyred,
+                notes = request.notes,
+                hasAvatar = request.hasAvatar
+            )
+        )
+
+        return ResponseEntity(
+            ResponseModel<SaintDTO>(
+                SaintDTO(
+                    id = record.id.toString(),
+                    createdDate = record.createdDate,
+                    modifiedDate = record.modifiedDate,
+                    active = record.active,
+                    name = record.name,
+                    yearOfBirth = record.yearOfBirth,
+                    yearOfDeath = record.yearOfDeath,
+                    region = record.region,
+                    martyred = record.martyred,
+                    notes = record.notes,
+                    hasAvatar = record.hasAvatar
+                )
+            ), HttpStatus.CREATED)
+    }
+
+    @PutMapping("/{id}")
+    fun update(@RequestBody request: PostSaintRequestModel, @PathVariable("id") id: String): ResponseEntity<ResponseModel<SaintDTO>> {
+        val record = repository.findOneById(ObjectId(id))
+
+        val updatedRecord = repository.save(
+            SaintDatabaseModel(
+                id = record.id,
+                createdDate = record.createdDate,
+                modifiedDate = LocalDateTime.now(),
+                active = request.active,
+                name = request.name,
+                yearOfBirth = request.yearOfBirth,
+                yearOfDeath = request.yearOfDeath,
+                region = request.region,
+                martyred = request.martyred,
+                notes = request.notes,
+                hasAvatar = request.hasAvatar
+            )
+        )
+
+        return ResponseEntity.ok(
+            ResponseModel<SaintDTO>(
+                SaintDTO(
+                    id = updatedRecord.id.toString(),
+                    createdDate = updatedRecord.createdDate,
+                    modifiedDate = updatedRecord.modifiedDate,
+                    active = updatedRecord.active,
+                    name = updatedRecord.name,
+                    yearOfBirth = updatedRecord.yearOfBirth,
+                    yearOfDeath = updatedRecord.yearOfDeath,
+                    region = updatedRecord.region,
+                    martyred = updatedRecord.martyred,
+                    notes = updatedRecord.notes,
+                    hasAvatar = updatedRecord.hasAvatar
+                )
+            )
+        )
+    }
+}
