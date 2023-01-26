@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  saint-api:
+    image: saint-api
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 3009:80
+    platform: linux/amd64
+    restart: always
+
+networks:
+  default:
+    external: true
+    name: local-network
