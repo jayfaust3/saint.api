@@ -6,6 +6,12 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
+    environment:
+      - AUTH_STRATEGY=${AUTH_STRATEGY}
+      - AUTH0_ISSUER=${AUTH0_ISSUER}
+      - AUTH0_API_AUDIENCE=${AUTH0_API_AUDIENCE}
+      - API_KEYS=${API_KEYS}
+      - MONGODB_URI=${MONGODB_URI}
     ports:
       - 3009:80
     platform: linux/amd64
