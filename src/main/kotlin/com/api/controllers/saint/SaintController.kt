@@ -1,10 +1,10 @@
-package com.saintapi.api.controllers.saint
+package com.saint.api.api
 
-import com.saintapi.common.models.data.saint.SaintDatabaseModel
-import com.saintapi.dataaccess.repositories.saint.SaintRepository
-import com.saintapi.common.models.api.response.ResponseModel
-import com.saintapi.common.models.api.request.saint.PostSaintRequestModel
-import com.saintapi.common.models.dtos.saint.SaintDTO
+import com.saint.api.common.models.data.saint.SaintDatabaseModel
+import com.saint.api.dataaccess.repositories.SaintRepository
+import com.saint.api.common.models.api.response.ResponseModel
+import com.saint.api.common.models.api.request.PostSaintRequestModel
+import com.saint.api.common.models.dtos.SaintDTO
 import org.bson.types.ObjectId
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -35,11 +35,7 @@ class SaintController(
             )
         }
 
-        return ResponseEntity.ok(
-            ResponseModel<List<SaintDTO>>(
-                records
-            )
-        )
+        return ResponseEntity.ok(ResponseModel(records))
     }
 
     @GetMapping("/{id}")
@@ -47,7 +43,7 @@ class SaintController(
         val record = repository.findOneById(ObjectId(id))
 
         return ResponseEntity.ok(
-            ResponseModel<SaintDTO>(
+            ResponseModel(
                 SaintDTO(
                     id = record.id.toString(),
                     createdDate = record.createdDate,
@@ -83,7 +79,7 @@ class SaintController(
         )
 
         return ResponseEntity(
-            ResponseModel<SaintDTO>(
+            ResponseModel(
                 SaintDTO(
                     id = record.id.toString(),
                     createdDate = record.createdDate,
@@ -121,7 +117,7 @@ class SaintController(
         )
 
         return ResponseEntity.ok(
-            ResponseModel<SaintDTO>(
+            ResponseModel(
                 SaintDTO(
                     id = updatedRecord.id.toString(),
                     createdDate = updatedRecord.createdDate,

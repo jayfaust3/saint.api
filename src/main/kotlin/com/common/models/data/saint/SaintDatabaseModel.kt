@@ -1,11 +1,10 @@
-package com.saintapi.common.models.data.saint
+package com.saint.api.common.models.data.saint
 
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
-import com.saintapi.common.models.data.base.BaseDatabaseModel
-import com.saintapi.common.enums.saint.Region
+import com.saint.api.common.enums.saint.Region
 
 @Document(collection="saints")
 data class SaintDatabaseModel (

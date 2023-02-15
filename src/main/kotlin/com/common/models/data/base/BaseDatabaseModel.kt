@@ -1,4 +1,4 @@
-package com.saintapi.common.models.data.base
+package com.saint.api.common.models.data
 
 import org.bson.types.ObjectId
 import java.time.LocalDateTime

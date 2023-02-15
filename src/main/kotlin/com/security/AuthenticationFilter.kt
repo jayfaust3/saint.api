@@ -1,16 +1,13 @@
-package com.saintapi.security
+package com.saint.api.security
 
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import org.slf4j.LoggerFactory
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.http.HttpHeaders
 import org.springframework.beans.factory.annotation.Value
 import com.auth0.jwt.JWT
-import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.interfaces.DecodedJWT
 import com.auth0.jwt.exceptions.JWTVerificationException
 import com.auth0.jwt.exceptions.JWTDecodeException

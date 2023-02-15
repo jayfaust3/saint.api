@@ -1,7 +1,7 @@
-package com.saintapi.common.models.dtos.saint
+package com.saint.api.common.models.dtos
 
 import java.time.LocalDateTime
-import com.saintapi.common.enums.saint.Region
+import com.saint.api.common.enums.saint.Region
 
 data class SaintDTO (
     val id: String,

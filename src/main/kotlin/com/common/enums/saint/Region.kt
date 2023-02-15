@@ -1,4 +1,4 @@
-package com.saintapi.common.enums.saint
+package com.saint.api.common.enums.saint
 
 enum class Region {
     ROME,

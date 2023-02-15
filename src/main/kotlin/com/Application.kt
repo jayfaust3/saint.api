@@ -1,4 +1,4 @@
-package com.saintapi
+package com.saint.api
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

@@ -1,6 +1,6 @@
-package com.saintapi.common.models.api.request.saint
+package com.saint.api.common.models.api.request
 
-import com.saintapi.common.enums.saint.Region
+import com.saint.api.common.enums.saint.Region
 
 class PostSaintRequestModel (
     val active: Boolean = true,
