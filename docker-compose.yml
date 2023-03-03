@@ -3,6 +3,8 @@ version: '3.8'
 services:
   saint-api:
     image: saint-api
+    container_name: saint-api
+    hostname: saint-api
     build:
       context: .
       dockerfile: ./Dockerfile
