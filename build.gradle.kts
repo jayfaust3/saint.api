@@ -47,6 +47,9 @@ dependencies {
     implementation("com.auth0:auth0-spring-security-api:1.5.2")
     implementation("io.jsonwebtoken:jjwt-extensions:0.11.5")
 
+    // mongodb
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb:3.1.0")
+
     // test
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
