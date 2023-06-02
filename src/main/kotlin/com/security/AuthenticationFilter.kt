@@ -22,6 +22,7 @@ class AuthenticationFilter(
     @Value(value = "\${app.auth.apikeys}")
     private val apiKeys: List<String>
 ) : OncePerRequestFilter() {
+
     @Throws(JWTVerificationException::class)
     override fun doFilterInternal(
             request: HttpServletRequest,
@@ -58,8 +59,6 @@ class AuthenticationFilter(
                     }
             
                     validateJWT(decodedJWT)
-
-                    // SecurityContextHolder.getContext().authentication = decodedJWT
                 }
                 else -> {
                     throw JWTVerificationException("No useful Authorization data provided by header")

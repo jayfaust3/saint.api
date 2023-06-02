@@ -11,7 +11,10 @@ import org.springframework.security.web.SecurityFilterChain
 @Configuration
 class SecurityConfiguration {
     @Autowired
-    lateinit var filter: AuthenticationFilter
+    lateinit var authenticationFilter: AuthenticationFilter
+
+    @Autowired
+    lateinit var authorizationFilter: AuthorizationFilter
 
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
@@ -19,11 +22,13 @@ class SecurityConfiguration {
             it.cors().and()
                 .csrf().disable()
                 .httpBasic().disable()
-                .authorizeRequests()
-                .requestMatchers("/").permitAll()
+                //.authorizeHttpRequests()
+                //.anyRequest().authenticated()
+                //.requestMatchers("/").permitAll()
                 // .anyRequest().hasAuthority("action:resource")
-                .and()
-                .addFilterBefore(filter, BasicAuthenticationFilter::class.java)
+                //.and()
+                .addFilterBefore(authenticationFilter, BasicAuthenticationFilter::class.java)
+                .addFilterBefore(authorizationFilter, BasicAuthenticationFilter::class.java)
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         }
