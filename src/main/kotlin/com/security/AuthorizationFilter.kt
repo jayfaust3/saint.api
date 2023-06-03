@@ -63,17 +63,6 @@ class AuthorizationFilter: OncePerRequestFilter {
         val authorizedScopes = readEndpointsScopeMap[routeKey] ?: writeEndpointsScopeMap[routeKey] ?: listOf()
         val scopesIntersection = authorizedScopes.toSet().intersect(scopesFromJWT.toSet())
 
-        logger.info("route: $route")
-        logger.info("method: $method")
-        logger.info("scopeClaim: $scopeClaim")
-        logger.info("scopesFromJWT: $scopesFromJWT")
-        logger.info("scopesFromJWT count: ${scopesFromJWT.count()}")
-        logger.info("readEndpointsScopeMap: $readEndpointsScopeMap")
-        logger.info("writeEndpointsScopeMap: $writeEndpointsScopeMap")
-        logger.info("routeKey: $routeKey")
-        logger.info("authorizedScopes: $authorizedScopes")
-        logger.info("scopesIntersection: $scopesIntersection")
-
         if (scopesIntersection.isEmpty()) {
             val errMessage = "The provided JWT with id '${jwt.claims["jti"]}' is missing required ${authorizedScopes.joinToString(" or ")} scope(s) to access $method $route"
             logger.error(errMessage)
