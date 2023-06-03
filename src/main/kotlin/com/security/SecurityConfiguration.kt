@@ -9,24 +9,21 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
 
 @Configuration
-class SecurityConfiguration {
-    @Autowired
-    lateinit var authenticationFilter: AuthenticationFilter
-
-    @Autowired
-    lateinit var authorizationFilter: AuthorizationFilter
+class SecurityConfiguration(
+    private val authenticationFilter: AuthenticationFilter,
+    private val authorizationFilter: AuthorizationFilter
+) {
 
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http.let {
-            it.cors().and()
-                .csrf().disable()
-                .httpBasic().disable()
-                //.authorizeHttpRequests()
-                //.anyRequest().authenticated()
-                //.requestMatchers("/").permitAll()
-                // .anyRequest().hasAuthority("action:resource")
-                //.and()
+            it
+                .cors()
+                .and()
+                .csrf()
+                .disable()
+                .httpBasic()
+                .disable()
                 .addFilterBefore(authenticationFilter, BasicAuthenticationFilter::class.java)
                 .addFilterBefore(authorizationFilter, BasicAuthenticationFilter::class.java)
                 .sessionManagement()
