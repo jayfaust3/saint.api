@@ -1,12 +1,12 @@
 package com.saint.api.security
 
 import org.springframework.stereotype.Component
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.filter.OncePerRequestFilter
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.HttpHeaders
-import org.springframework.beans.factory.annotation.Value
 import com.auth0.jwt.JWT
 import com.auth0.jwt.interfaces.DecodedJWT
 import com.auth0.jwt.exceptions.JWTVerificationException
@@ -39,9 +39,7 @@ class AuthenticationFilter(
         if (!authHeader.isEmpty()) {
             val authHeaderParts: List<String> = authHeader.split(" ")
 
-            val authHeaderPrefix: String = authHeaderParts.first().lowercase()
-
-            when (authHeaderPrefix) {
+            when (authHeaderParts.first().lowercase()) {
                 "apikey" -> {
                     val apiKey: String = authHeaderParts.last()
 
@@ -80,7 +78,7 @@ class AuthenticationFilter(
             throw JWTVerificationException("JWT does not contain valid issuer")
         }
 
-        if (!(jwt.audience?.contains(apiAudience) ?: false)) {
+        if (jwt.audience?.contains(apiAudience) != true) {
             throw JWTVerificationException("JWT does not contain valid audience")
         }
     }

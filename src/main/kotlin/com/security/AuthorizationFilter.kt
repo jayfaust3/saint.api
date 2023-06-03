@@ -8,28 +8,28 @@ import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.HttpHeaders
 import com.auth0.jwt.JWT
 import com.auth0.jwt.interfaces.DecodedJWT
-import com.auth0.jwt.exceptions.InvalidClaimException
+import com.auth0.jwt.exceptions.JWTVerificationException
 
 @Component
 class AuthorizationFilter: OncePerRequestFilter {
 
-    private val endpointScopeMap: HashMap<String, List<String>> =
-        HashMap<String, List<String>> ()
+    private val readEndpointsScopeMap: HashMap<String, List<String>> = HashMap()
+    private val writeEndpointsScopeMap: HashMap<String, List<String>> = HashMap()
 
     constructor() {
-        endpointScopeMap["/api/saints:GET"] = listOf("saint:read", "saint:write")
-        endpointScopeMap["/api/saints:POST"] = listOf("saint:write")
-        endpointScopeMap["/api/saints:PUT"] = listOf("saint:write")
-        endpointScopeMap["/api/saints:DELETE"] = listOf("saint:write")
+        readEndpointsScopeMap["/api/saints:GET"] = listOf("saint:read", "saint:write")
+        writeEndpointsScopeMap["/api/saints:POST"] = listOf("saint:write")
+        writeEndpointsScopeMap["/api/saints:PUT"] = listOf("saint:write")
+        writeEndpointsScopeMap["/api/saints:DELETE"] = listOf("saint:write")
     }
 
-    @Throws(InvalidClaimException::class)
+    @Throws(JWTVerificationException::class)
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
         filterChain: FilterChain): Unit {
         val authHeader = request.getHeader(HttpHeaders.AUTHORIZATION)
-        val route = request.requestURI
+        val route = request.requestURI.split("/").take(3).joinToString("/")
         val method = request.method
 
         authorizeFromHeader(route, method, authHeader)
@@ -40,9 +40,7 @@ class AuthorizationFilter: OncePerRequestFilter {
     private fun authorizeFromHeader(route: String, method: String, authHeader: String): Unit {
         val authHeaderParts: List<String> = authHeader.split(" ")
 
-        val authHeaderPrefix: String = authHeaderParts.first().lowercase()
-
-        when (authHeaderPrefix) {
+        when (authHeaderParts.first().lowercase()) {
             "apikey" -> {
                 val apiKey: String = authHeaderParts.last()
 
@@ -62,7 +60,7 @@ class AuthorizationFilter: OncePerRequestFilter {
         val scopeClaim = jwt.claims["scp"].toString().replace("\"", "")
         val scopesFromJWT = scopeClaim.split(" ")
         val routeKey = "$route:$method"
-        val authorizedScopes = endpointScopeMap[routeKey] ?: listOf()
+        val authorizedScopes = readEndpointsScopeMap[routeKey] ?: writeEndpointsScopeMap[routeKey] ?: listOf()
         val scopesIntersection = authorizedScopes.toSet().intersect(scopesFromJWT.toSet())
 
         logger.info("route: $route")
@@ -70,16 +68,27 @@ class AuthorizationFilter: OncePerRequestFilter {
         logger.info("scopeClaim: $scopeClaim")
         logger.info("scopesFromJWT: $scopesFromJWT")
         logger.info("scopesFromJWT count: ${scopesFromJWT.count()}")
-        logger.info("endpointScopeMap: $endpointScopeMap")
+        logger.info("readEndpointsScopeMap: $readEndpointsScopeMap")
+        logger.info("writeEndpointsScopeMap: $writeEndpointsScopeMap")
         logger.info("routeKey: $routeKey")
         logger.info("authorizedScopes: $authorizedScopes")
         logger.info("scopesIntersection: $scopesIntersection")
-        logger.info("scopesIntersection size: ${scopesIntersection.size}")
 
-        if (scopesIntersection.size == 0) {
-            throw InvalidClaimException("The provided JWT is missing required ${authorizedScopes.joinToString(" or ")} scope(s) to access $method $route")
+        if (scopesIntersection.isEmpty()) {
+            val errMessage = "The provided JWT with id '${jwt.claims["jti"]}' is missing required ${authorizedScopes.joinToString(" or ")} scope(s) to access $method $route"
+            logger.error(errMessage)
+            throw JWTVerificationException(errMessage)
         }
     }
 
-    private fun validateAPIKey(requestURI: String, method: String, apiKey: String): Unit {}
+    private fun validateAPIKey(route: String, method: String, apiKey: String): Unit {
+        val routeKey = "$route:$method"
+        val authorizedScopes = readEndpointsScopeMap[routeKey] ?: listOf()
+
+        if (authorizedScopes.isEmpty()) {
+            val errMessage = "The provided API key, '$apiKey', is not permitted to access $method $route"
+            logger.error(errMessage)
+            throw JWTVerificationException(errMessage)
+        }
+    }
 }
