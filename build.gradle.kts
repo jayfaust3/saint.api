@@ -34,6 +34,9 @@ dependencies {
     // kotlinx
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
 
+    //aws
+    implementation("com.amazonaws:aws-java-sdk:1.12.429")
+
     // nimbus
     implementation("com.nimbusds:nimbus-jose-jwt:9.22")
 

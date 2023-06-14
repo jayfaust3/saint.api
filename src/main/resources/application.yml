@@ -5,9 +5,18 @@ app:
       issuer: ${AUTH0_ISSUER}
       apiAudience: ${AUTH0_API_AUDIENCE}
     apikeys: ${API_KEYS}
+aws:
+  region: ${AWS_REGION}
+  clientId: ${AWS_CLIENT_ID}
+  clientSecret: ${AWS_CLIENT_SECRET}
+  dynamo:
+    endpoint: ${AWS_DYNAMO_ENDPOINT}
+    saintTableName: ${AWS_DYNAMO_SAINT_TABLE_NAME}
 server:
   port: 80
 spring:
   data:
-    mongodb:
-      uri: ${MONGODB_URI}
+    main:
+      allow-bean-definition-overriding: true
+#    mongodb:
+#      uri: ${MONGODB_URI}
