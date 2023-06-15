@@ -1,12 +1,12 @@
 package com.saint.api.common.models.dtos
 
-import java.time.LocalDateTime
+import java.time.OffsetDateTime
 import com.saint.api.common.enums.saint.Region
 
 data class SaintDTO (
     val id: String,
-    val createdDate: LocalDateTime,
-    val modifiedDate: LocalDateTime,
+    val createdDate: OffsetDateTime,
+    val modifiedDate: OffsetDateTime,
     val active: Boolean,
     val name: String,
     val yearOfBirth: Int,
@@ -14,5 +14,5 @@ data class SaintDTO (
     val region: Region,
     val martyred: Boolean,
     val notes: String?,
-    val hasAvatar: Boolean?
+    val hasAvatar: Boolean
 )

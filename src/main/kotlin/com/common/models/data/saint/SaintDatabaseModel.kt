@@ -30,16 +30,16 @@ import com.saint.api.common.enums.saint.Region
 // : BaseDatabaseModel(id, createdDate, modifiedDate, active)
 
 data class SaintDatabaseModel (
-        val partitionKey: String = "SAINT",
+        val partitionKey: String,
         val sortKey: String,
-        val createdDate: OffsetDateTime = OffsetDateTime.now(),
-        val modifiedDate: OffsetDateTime = OffsetDateTime.now(),
-        val active: Boolean = true,
+        val createdDate: OffsetDateTime,
+        val modifiedDate: OffsetDateTime,
+        val active: Boolean,
         val name: String,
         val yearOfBirth: Int,
         val yearOfDeath: Int,
         val region: Region,
-        val martyred: Boolean = false,
+        val martyred: Boolean,
         val notes: String?,
-        val hasAvatar: Boolean = false
+        val hasAvatar: Boolean
 )

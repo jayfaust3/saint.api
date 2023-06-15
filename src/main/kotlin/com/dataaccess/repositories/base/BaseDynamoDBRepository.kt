@@ -7,7 +7,7 @@ import com.amazonaws.auth.BasicAWSCredentials
 import com.amazonaws.client.builder.AwsClientBuilder
 import com.amazonaws.services.dynamodbv2.document.DynamoDB
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder
-import com.permission.api.configuration.AWSConfiguration
+import com.saint.api.configuration.AWSConfiguration
 
 @Repository
 open class BaseDynamoDBRepository  (

@@ -1,15 +1,14 @@
 package com.saint.api.api
 
+import java.time.OffsetDateTime
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
 import com.saint.api.common.models.data.saint.SaintDatabaseModel
 import com.saint.api.dataaccess.repositories.SaintRepository
 import com.saint.api.common.models.api.response.ResponseModel
 import com.saint.api.common.models.api.request.PostSaintRequestModel
 import com.saint.api.common.models.dtos.SaintDTO
-import org.bson.types.ObjectId
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
-import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/api/saints")
@@ -65,8 +64,8 @@ class SaintController(
     fun create(@RequestBody request: PostSaintRequestModel): ResponseEntity<ResponseModel<SaintDTO>> {
         val record = repository.save(
             SaintDatabaseModel(
-                createdDate = LocalDateTime.now(),
-                modifiedDate = LocalDateTime.now(),
+                createdDate = OffsetDateTime.now(),
+                modifiedDate = OffsetDateTime.now(),
                 active = request.active,
                 name = request.name,
                 yearOfBirth = request.yearOfBirth,
@@ -104,7 +103,7 @@ class SaintController(
             SaintDatabaseModel(
                 id = record.id,
                 createdDate = record.createdDate,
-                modifiedDate = LocalDateTime.now(),
+                modifiedDate = OffsetDateTime.now(),
                 active = request.active,
                 name = request.name,
                 yearOfBirth = request.yearOfBirth,
