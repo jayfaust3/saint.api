@@ -13,7 +13,7 @@ class SaintWriteRequest(saint: SaintDTO) {
         saint.name,
         saint.yearOfBirth,
         saint.yearOfDeath,
-        saint.region,
+        "${saint.region}",
         saint.martyred,
         saint.notes,
         saint.hasAvatar

@@ -3,8 +3,6 @@ package com.saint.api.common.models.data.saint
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
-//import java.time.LocalDateTime
-import java.time.OffsetDateTime
 import com.saint.api.common.enums.saint.Region
 
 //@Document(collection="saints")
@@ -32,13 +30,13 @@ import com.saint.api.common.enums.saint.Region
 data class SaintDatabaseModel (
         val partitionKey: String,
         val sortKey: String,
-        val createdDate: OffsetDateTime,
-        val modifiedDate: OffsetDateTime,
+        val createdDate: Long,
+        val modifiedDate: Long,
         val active: Boolean,
         val name: String,
         val yearOfBirth: Int,
         val yearOfDeath: Int,
-        val region: Region,
+        val region: String,
         val martyred: Boolean,
         val notes: String?,
         val hasAvatar: Boolean

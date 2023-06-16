@@ -5,9 +5,8 @@ import com.saint.api.common.enums.saint.Region
 
 data class SaintDTO (
     val id: String,
-    val createdDate: OffsetDateTime,
-    val modifiedDate: OffsetDateTime,
-    val active: Boolean,
+    val createdDate: Long,
+    val modifiedDate: Long,
     val name: String,
     val yearOfBirth: Int,
     val yearOfDeath: Int,
