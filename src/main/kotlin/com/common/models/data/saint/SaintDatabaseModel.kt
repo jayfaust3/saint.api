@@ -3,7 +3,6 @@ package com.saint.api.common.models.data.saint
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
-import java.time.LocalDateTime
 import com.saint.api.common.enums.saint.Region
 
 @Document(collection="saints")
@@ -15,9 +14,8 @@ data class SaintDatabaseModel (
         // override val active: Boolean = true,
         @Id
         val id: ObjectId = ObjectId.get(),
-        val createdDate: LocalDateTime = LocalDateTime.now(),
-        val modifiedDate: LocalDateTime = LocalDateTime.now(),
-        val active: Boolean = true,
+        val createdDate: Long,
+        val modifiedDate: Long,
         val name: String,
         val yearOfBirth: Int,
         val yearOfDeath: Int,

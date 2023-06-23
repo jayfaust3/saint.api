@@ -9,7 +9,7 @@ import org.bson.types.ObjectId
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.time.LocalDateTime
+import java.time.OffsetDateTime
 
 @RestController
 @RequestMapping("/api/saints")
@@ -22,9 +22,6 @@ class SaintController(
         val records = repository.findAll().map{ it -> 
             SaintDTO(
                 id = it.id.toString(),
-                createdDate = it.createdDate,
-                modifiedDate = it.modifiedDate,
-                active = it.active,
                 name = it.name,
                 yearOfBirth = it.yearOfBirth,
                 yearOfDeath = it.yearOfDeath,
@@ -46,9 +43,6 @@ class SaintController(
             ResponseModel(
                 SaintDTO(
                     id = record.id.toString(),
-                    createdDate = record.createdDate,
-                    modifiedDate = record.modifiedDate,
-                    active = record.active,
                     name = record.name,
                     yearOfBirth = record.yearOfBirth,
                     yearOfDeath = record.yearOfDeath,
@@ -65,9 +59,8 @@ class SaintController(
     fun create(@RequestBody request: PostSaintRequestModel): ResponseEntity<ResponseModel<SaintDTO>> {
         val record = repository.save(
             SaintDatabaseModel(
-                createdDate = LocalDateTime.now(),
-                modifiedDate = LocalDateTime.now(),
-                active = request.active,
+                createdDate = OffsetDateTime.now().toEpochSecond(),
+                modifiedDate = OffsetDateTime.now().toEpochSecond(),
                 name = request.name,
                 yearOfBirth = request.yearOfBirth,
                 yearOfDeath = request.yearOfDeath,
@@ -82,9 +75,6 @@ class SaintController(
             ResponseModel(
                 SaintDTO(
                     id = record.id.toString(),
-                    createdDate = record.createdDate,
-                    modifiedDate = record.modifiedDate,
-                    active = record.active,
                     name = record.name,
                     yearOfBirth = record.yearOfBirth,
                     yearOfDeath = record.yearOfDeath,
@@ -104,8 +94,7 @@ class SaintController(
             SaintDatabaseModel(
                 id = record.id,
                 createdDate = record.createdDate,
-                modifiedDate = LocalDateTime.now(),
-                active = request.active,
+                modifiedDate = OffsetDateTime.now().toEpochSecond(),
                 name = request.name,
                 yearOfBirth = request.yearOfBirth,
                 yearOfDeath = request.yearOfDeath,
@@ -120,9 +109,6 @@ class SaintController(
             ResponseModel(
                 SaintDTO(
                     id = updatedRecord.id.toString(),
-                    createdDate = updatedRecord.createdDate,
-                    modifiedDate = updatedRecord.modifiedDate,
-                    active = updatedRecord.active,
                     name = updatedRecord.name,
                     yearOfBirth = updatedRecord.yearOfBirth,
                     yearOfDeath = updatedRecord.yearOfDeath,
@@ -132,6 +118,17 @@ class SaintController(
                     hasAvatar = updatedRecord.hasAvatar
                 )
             )
+        )
+    }
+
+    @DeleteMapping("/{id}")
+    fun delete(@PathVariable("id") id: String): ResponseEntity<ResponseModel<Boolean>> {
+        val record = repository.findOneById(ObjectId(id))
+
+        if (record !== null) repository.deleteById(id)
+
+        return ResponseEntity.ok(
+            ResponseModel(true)
         )
     }
 }
