@@ -14,6 +14,7 @@ services:
       - AUTH0_API_AUDIENCE=${AUTH0_API_AUDIENCE}
       - API_KEYS=${API_KEYS}
       - MONGODB_URI=${MONGODB_URI}
+      - MONGODB_REPLICA_SET=${MONGODB_REPLICA_SET}
     ports:
       - 3009:80
     platform: linux/amd64
