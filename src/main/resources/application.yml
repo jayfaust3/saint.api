@@ -13,4 +13,5 @@ server:
 #      uri: ${MONGODB_URI}
 mongodb:
   uri: ${MONGODB_URI}
+  saintDBName: ${MONGODB_SAINT_DB_NAME}
   replicaSet: ${MONGODB_REPLICA_SET}
